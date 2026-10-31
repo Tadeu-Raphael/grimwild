@@ -56,12 +56,13 @@ jobs:
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1.21.0
         with:
+          tag: "${{ env.REF }}"
           name: "${{ env.REF }}"
           bodyFile: "release-notes/${{ env.REF }}.md"
           artifacts: "system.json,grimwild.zip"
           artifactErrorsFailBuild: true
           draft: false
-          prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') }}
+          prerelease: ${{ contains(env.REF, 'alpha') || contains(env.REF, 'beta') }}
           allowUpdates: true
           replacesArtifacts: true
           makeLatest: legacy
