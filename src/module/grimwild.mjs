@@ -91,6 +91,7 @@ Hooks.once("init", function () {
 	CONFIG.Item.dataModels = {
 		talent: models.GrimwildTalent,
 		arcana: models.GrimwildArcana,
+		treasure: models.GrimwildTreasure,
 		challenge: models.GrimwildChallenge
 	};
 
@@ -125,7 +126,7 @@ Hooks.once("init", function () {
 	foundry.documents.collections.Items.registerSheet("grimwild", GrimwildItemSheetVue, {
 		makeDefault: true,
 		label: "Grimwild Vue Sheet",
-		types: ["talent", "challenge", "arcana"]
+		types: ["talent", "challenge", "arcana", "treasure"]
 	});
 	foundry.documents.collections.RollTables.registerSheet("grimwild", GrimwildRollTableCrucibleSheet, {
 		makeDefault: false,

@@ -113,6 +113,7 @@ GRIMWILD:
       Biography: Biography
       Notes: Notes
       Talents: Talents
+      Treasure: Treasure
       Challenges: Challenges
       Effects: Effects
       Arcana: Arcana
@@ -213,6 +214,31 @@ GRIMWILD:
           label: Quantity
         weight:
           label: Weight
+    Treasure:
+      FIELDS:
+        value:
+          label: Value
+          options:
+            minor: Minor
+            major: Major
+            mythic: Mythic
+        treasureType:
+          label: Type
+          options:
+            tangible: Tangible
+            intangible: Intangible
+            magic: Magic
+        isArcana:
+          label: Is this treasure an Arcana?
+        touchstones:
+          label: Touchstones
+        limitations:
+          label: Limitations
+        notes:
+          label: Notes
+        trackers:
+          label: Trackers
+      arcanaDetails: Arcana Details
     base:
       FIELDS:
         description:
@@ -264,4 +290,5 @@ TYPES:
   Item:
     talent: Talent
     arcana: Arcana
+    treasure: Treasure
     challenge: Challenge

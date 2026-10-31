@@ -1,7 +1,7 @@
 id: grimwild
 title: Grimwild
 description: The Grimwild system for FoundryVTT!
-version: '1.0.4'
+version: '1.1.0'
 compatibility:
   minimum: '13'
   verified: '14.369'
@@ -44,6 +44,11 @@ documentTypes:
       htmlFields:
       - description
       - notes.description
+    treasure:
+      htmlFields:
+      - description
+      - notes.description
+      - limitations
     challenge:
       htmlFields:
       - description
@@ -121,10 +126,10 @@ packs:
     type: Item
     path: packs/talents
     system: grimwild
-  - name: arcana
-    label: Arcana
+  - name: treasures
+    label: Treasures
     type: Item
-    path: packs/arcana
+    path: packs/treasures
     system: grimwild
 packFolders: []
 

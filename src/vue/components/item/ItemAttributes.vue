@@ -1,7 +1,7 @@
 <template>
 	<!-- @TODO: Restore when crucibles are added back to talents. -->
 	<!-- <ItemCrucible v-if="['talent'].includes(context.item.type)" :context="context" /> -->
-	<TalentTrackers v-if="['arcana', 'talent'].includes(context.item.type)" :context="context"/>
+	<TalentTrackers v-if="['arcana', 'talent'].includes(context.item.type) || (context.item.type === 'treasure' && context.system.treasureType === 'magic' && context.system.isArcana)" :context="context"/>
 	<ChallengeTraitsMoves v-if="context.item.type === 'challenge'" :context="context" />
 </template>
 

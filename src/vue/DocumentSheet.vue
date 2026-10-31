@@ -38,9 +38,9 @@
 							<CharTalents :actor="context.actor" :context="context"/>
 						</Tab>
 
-						<!-- Arcana -->
-						<Tab v-if="context.actor.type === 'character'" group="primary" :tab="tabs.primary.arcana">
-							<CharArcana :actor="context.actor" :context="context"/>
+						<!-- Treasures -->
+						<Tab v-if="context.actor.type === 'character'" group="primary" :tab="tabs.primary.treasure">
+							<CharTreasure :context="context"/>
 						</Tab>
 
 						<!-- @todo Active effects disabled for now. -->
@@ -64,7 +64,7 @@ import {
 	CharHeader,
 	CharDetails,
 	CharTalents,
-	CharArcana,
+	CharTreasure,
 	CharEffects,
 	Prosemirror
 } from '@/components';

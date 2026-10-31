@@ -26,6 +26,11 @@ export class GrimwildActorSheetVue extends VueRenderingMixin(GrimwildBaseVueActo
 				"description",
 				"notes.description",
 				"limitations"
+			],
+			treasure: [
+				"description",
+				"notes.description",
+				"limitations"
 			]
 		}
 	};
@@ -275,9 +280,9 @@ export class GrimwildActorSheetVue extends VueRenderingMixin(GrimwildBaseVueActo
 				active: false
 			};
 
-			context.tabs.primary.arcana = {
-				key: "arcana",
-				label: game.i18n.localize("GRIMWILD.Actor.Tabs.Arcana"),
+			context.tabs.primary.treasure = {
+				key: "treasure",
+				label: game.i18n.localize("GRIMWILD.Actor.Tabs.Treasure"),
 				active: false
 			};
 		}

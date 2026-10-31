@@ -33,6 +33,7 @@
 						<Tab group="primary" :tab="tabs.primary.attributes">
 							<!-- Arcana Details -->
 							<ArcanaDetails v-if="context.item.type === 'arcana'" :context="context"/>
+							<TreasureDetails v-if="context.item.type === 'treasure'" :context="context"/>
 							<!-- Trackers -->
 							<ItemAttributes :context="context" />
 						</Tab>
@@ -58,7 +59,8 @@ import {
 	ItemDescription,
 	ItemAttributes,
 	Prosemirror,
-	ArcanaDetails
+	ArcanaDetails,
+	TreasureDetails
 } from '@/components';
 import { reactive, toRaw } from 'vue';
 

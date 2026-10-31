@@ -8,4 +8,5 @@ export { default as GrimwildLinkedChallenge } from "./actor-linked-challange.mjs
 export { default as GrimwildItemBase } from "./base-item.mjs";
 export { default as GrimwildTalent } from "./item-talent.mjs";
 export { default as GrimwildArcana } from "./item-arcana.mjs";
+export { default as GrimwildTreasure } from "./item-treasure.mjs";
 export { default as GrimwildChallenge } from "./item-challenge.mjs";
