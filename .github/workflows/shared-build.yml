@@ -1,9 +1,15 @@
 name: Shared Build Job
 on:
   workflow_call:
+    inputs:
+      build_ref:
+        description: Optional tag to build for a manually dispatched release
+        required: false
+        type: string
+        default: ''
 
 env:
-  REF: "${{ github.head_ref || github.ref_name}}"
+  REF: "${{ inputs.build_ref || github.head_ref || github.ref_name }}"
 jobs:
 
   #####################################################################
@@ -11,20 +17,21 @@ jobs:
   #####################################################################
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container:
       image: node:20
     timeout-minutes: 60
     steps:
 
     - name: Retrieving git refs
-      uses: actions/checkout@v4.1.0
+      uses: actions/checkout@v7.0.1
       with:
+        ref: "${{ inputs.build_ref || github.ref }}"
         fetch-depth: 50
         lfs: false
 
     - name: Retrieving cache
-      uses: actions/cache@v4
+      uses: actions/cache@v6.1.0
       with:
         path: node_modules/
         key: node-${{ hashFiles('package-lock.json') }}
@@ -37,22 +44,22 @@ jobs:
       run: npm run build
 
     - name: Build manifest
-      if: github.ref_type == 'tag'
-      run: node ./.github/workflows/update-build-tags.js --tag=${REF} --project=${GITHUB_REPOSITORY}
+      if: github.ref_type == 'tag' || inputs.build_ref != ''
+      run: node ./.github/workflows/update-build-tags.js --tag="${REF}" --project="${GITHUB_REPOSITORY}"
 
     - name: Create package directory
-      if: github.ref_type == 'tag'
+      if: github.ref_type == 'tag' || inputs.build_ref != ''
       run: cp ./dist/system.json ./system.json && mv dist grimwild
 
     - name: Generate grimwild.zip
       uses: montudor/action-zip@v1
-      if: github.ref_type == 'tag'
+      if: github.ref_type == 'tag' || inputs.build_ref != ''
       with:
         args: zip -q grimwild.zip -r grimwild
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4.1.0
-      if: success() && github.ref_type == 'tag'
+      uses: actions/upload-artifact@v7.0.2
+      if: success() && (github.ref_type == 'tag' || inputs.build_ref != '')
       with:
         name: "${{ github.job }}"
         path: |-
