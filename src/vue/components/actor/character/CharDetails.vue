@@ -9,7 +9,7 @@
 				data-field="backgrounds"
 				type="button"
 			><i class="fas fa-plus"></i></button>
-			<div :class="`background flexcol ${key === 0 ? 'stroke stroke-bottom' : ''}`" v-for="(background, key) in context.system.backgrounds" :key="key">
+			<div :class="`background flexcol ${key < context.system.backgrounds.length - 1 ? 'stroke stroke-bottom' : ''}`" v-for="(background, key) in context.system.backgrounds" :key="key">
 				<div class="background-name form-group stacked">
 					<label>{{ game.i18n.localize('Name') }}</label>
 					<input type="text"

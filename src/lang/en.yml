@@ -143,8 +143,8 @@ GRIMWILD:
         desires:
           label: Desires
         backgrounds:
-          label: Backgrounds
-          placeholder: Background name
+          label: Backgrounds/Heritages
+          placeholder: Background/Heritage name
           FIELDS:
             wises:
               label: Wises
