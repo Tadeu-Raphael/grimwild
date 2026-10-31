@@ -48,14 +48,21 @@ export class GrimwildActor extends Actor {
 	 * @inheritdoc
 	 */
 	async _preCreate(data, options, user) {
+		const result = await super._preCreate(data, options, user);
+		if (result === false) return false;
+
 		if (this.type === "character") {
-			this.updateSource({
-				prototypeToken: {
-					actorLink: true,
-					disposition: 1, // friendly
-					sight: { enabled: true }
+			// updateSource would rerun actor preparation during this create cycle.
+			const prototypeToken = this._source.prototypeToken ?? {};
+			this._source.prototypeToken = {
+				...prototypeToken,
+				actorLink: true,
+				disposition: 1,
+				sight: {
+					...prototypeToken.sight,
+					enabled: true
 				}
-			});
+			};
 		}
 	}
 }
