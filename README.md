@@ -1,6 +1,6 @@
 # Grimwild
 
-![Foundry v13.351](https://img.shields.io/badge/Foundry-v13.351-green)
+![Foundry v14.369](https://img.shields.io/badge/Foundry-v14.369-green)
 
 A FoundryVTT system for the [Grimwild](https://www.odditypress.com/) RPG.
 
@@ -13,12 +13,18 @@ The Grimwild system is not yet available in the Foundry package manager, but it 
 1. Go to Foundry's setup page
 2. Go to the **Game Systems** tab
 3. Choose **Install System**
-4. Paste the following link into the **Manifest URL** field: https://asacolips-artifacts.s3.amazonaws.com/grimwild/latest/system.json
+4. Paste the following link into the **Manifest URL** field: https://github.com/Tadeu-Raphael/grimwild/releases/latest/download/system.json
 5. Click **Install**
 
 ## Updates
 
 The manifest is configured so that Foundry will be able to handle updates. Once the system is installed, just use the check for updates button as you would for any other system.
+
+## Releasing
+
+Create a release note at `release-notes/<version>.md`, then push a tag using the same version (for example, `0.6.0`). The GitHub Actions workflow builds the system and creates a GitHub Release with `system.json` and `grimwild.zip` attached. Use semantic version tags without a `v` prefix so the tag, manifest version, and release-notes filename match.
+
+The repository must be public for Foundry to download the manifest and release package.
 
 ## Getting Started
 

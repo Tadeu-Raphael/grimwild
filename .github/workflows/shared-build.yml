@@ -3,11 +3,6 @@ on:
   workflow_call:
 
 env:
-  AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-  AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-  # FVTT_PACKAGE_TOKEN: "${{ secrets.FVTT_PACKAGE_TOKEN }}" # Temporarily disabled.
-  S3_BUCKET: asacolips-artifacts
-  REF_TYPE: ${{ github.ref_type }}
   REF: "${{ github.head_ref || github.ref_name}}"
 jobs:
 
@@ -19,7 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: node:20
-    if: github.repository_owner == 'asacolips-projects'
     timeout-minutes: 60
     steps:
 
@@ -44,7 +38,7 @@ jobs:
 
     - name: Build manifest
       if: github.ref_type == 'tag'
-      run: node ./.github/workflows/update-build-tags.js --ref_type=${REF_TYPE}  --tag=${REF} --bucket=${S3_BUCKET} --project=${GITHUB_REPOSITORY}
+      run: node ./.github/workflows/update-build-tags.js --tag=${REF} --project=${GITHUB_REPOSITORY}
 
     - name: Create package directory
       if: github.ref_type == 'tag'

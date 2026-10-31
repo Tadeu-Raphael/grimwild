@@ -1,6 +1,5 @@
-name: Tagged Build + Release
+name: Tagged Build + GitHub Release
 on:
-  # pull_request:
   push:
     tags:
       - '*'
@@ -8,106 +7,50 @@ on:
 concurrency:
   group: "${{ github.ref }}"
   cancel-in-progress: true
+
+permissions:
+  contents: read
+
 env:
-  AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-  AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-  FVTT_PACKAGE_TOKEN: "${{ secrets.FVTT_PACKAGE_TOKEN }}"
-  S3_BUCKET: asacolips-artifacts
-  REF_TYPE: ${{ github.ref_type }}
   REF: "${{ github.head_ref || github.ref_name}}"
 jobs:
-
-  #####################################################################
-  ### Build Job #######################################################
-  #####################################################################
   build:
     uses: ./.github/workflows/shared-build.yml
 
-  #####################################################################
-  ### Deploy Job ######################################################
-  #####################################################################
-  deploy:
-    name: Deploy
+  release:
+    name: Publish GitHub Release
     needs: build
     runs-on: ubuntu-latest
-    container:
-      image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
-    if: github.ref_type == 'tag' && github.repository_owner == 'asacolips-projects'
-    timeout-minutes: 60
+    permissions:
+      contents: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.0
+        with:
+          lfs: false
 
-    - name: Retrieving git refs
-      uses: actions/checkout@v4.1.0
-      with:
-        fetch-depth: 50
-        lfs: false
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4.1.3
+        with:
+          name: build
 
-    - name: Download artifacts from previous step
-      uses: actions/download-artifact@v4.1.3
-      with:
-        name: build
+      - name: Verify release notes exist
+        run: |
+          if [ ! -f "release-notes/${REF}.md" ]; then
+            echo "::error::Missing release-notes/${REF}.md"
+            exit 1
+          fi
 
-    - name: Get branch
-      run: echo "BRANCH=$(./.github/workflows/get-branch.sh)" >> $GITHUB_ENV
-
-    - name: S3 Upload
-      run: |
-        aws configure set region us-east-1
-        aws s3 cp ./grimwild.zip s3://${S3_BUCKET}/grimwild/${REF}/grimwild.zip --acl="public-read"
-        aws s3 cp ./system.json s3://${S3_BUCKET}/grimwild/${REF}/system.json --acl="public-read"
-        aws s3 cp ./system.json s3://${S3_BUCKET}/grimwild/${BRANCH}/system.json --acl="public-read"
-
-    - name: Verify release notes exist
-      id: check_files
-      uses: andstor/file-existence-action@v3
-      with:
-        files: "release-notes/${{ env.REF }}.md"
-
-    - name: Create Release
-      id: create_release
-      uses: ncipollo/release-action@v1
-      if: steps.check_files.outputs.files_exists == 'true'
-      with:
-        bodyFile: release-notes/${{ env.REF }}.md
-        draft: false
-        allowUpdates: true
-        token: ${{ secrets.GITHUB_TOKEN }} # Provided by actions.
-
-  #####################################################################
-  ### FVTT Package Manager Release Job ################################
-  #####################################################################
-  fvtt_release:
-    name: FVTT Package Release
-    needs: deploy
-    runs-on: ubuntu-latest
-    container:
-      image: node:20
-    if: github.ref_type == 'tag' && github.repository_owner == 'asacolips-projects' && contains(github.ref_name, 'beta') == false && contains(github.ref_name, 'alpha') == false
-    timeout-minutes: 60
-    steps:
-
-    - name: Retrieving git refs
-      uses: actions/checkout@v4.1.0
-      with:
-        fetch-depth: 50
-        lfs: false
-
-    - name: Download artifacts from previous step
-      uses: actions/download-artifact@v4.1.3
-      with:
-        name: build
-
-    - name: Retrieving cache
-      uses: actions/cache@v4
-      with:
-        path: node_modules/
-        key: node-${{ hashFiles('package-lock.json') }}
-        restore-keys: node-
-
-    - name: Install NPM dependencies
-      run: npm install
-
-    - name: Create FVTT Release
-      id: create_fvtt_release
-      run: node ./.github/workflows/foundry-package-release.mjs --fvtt_token=${FVTT_PACKAGE_TOKEN}
-
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          name: "${{ env.REF }}"
+          bodyFile: "release-notes/${{ env.REF }}.md"
+          artifacts: "system.json,grimwild.zip"
+          artifactErrorsFailBuild: true
+          draft: false
+          prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') }}
+          allowUpdates: true
+          replacesArtifacts: true
+          makeLatest: legacy
+          token: ${{ secrets.GITHUB_TOKEN }}

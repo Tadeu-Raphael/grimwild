@@ -1,14 +1,14 @@
 id: grimwild
 title: Grimwild
 description: The Grimwild system for FoundryVTT!
-version: '0.5.3'
+version: '1.0.0'
 compatibility:
   minimum: '13'
-  verified: '13.351'
-  maximum: '13'
+  verified: '14.369'
+  maximum: '14'
 
-manifest: https://asacolips-artifacts.s3.amazonaws.com/grimwild/latest/system.json
-download: https://asacolips-artifacts.s3.amazonaws.com/grimwild/latest/grimwild.zip
+manifest: https://github.com/Tadeu-Raphael/grimwild/releases/latest/download/system.json
+download: https://github.com/Tadeu-Raphael/grimwild/releases/latest/download/grimwild.zip
 
 authors:
   - name: Asacolips
@@ -19,6 +19,8 @@ authors:
     discord: calmrush
   - name: Phoenix
     discord: lostphoenix._.
+  - name: Tadeu-Raphael
+    discord: tadeuraphael
 
 documentTypes:
   Actor:
@@ -58,10 +60,10 @@ flags:
     - lang
     - templates
 
-url: Replace this with a link to your public repository
+url: https://github.com/Tadeu-Raphael/grimwild
 license: LICENSE.txt
 readme: README.md
-bugs: Replace this with a link to file issues or tickets
+bugs: https://github.com/Tadeu-Raphael/grimwild/issues
 changelog: CHANGELOG.md
 
 # World background
