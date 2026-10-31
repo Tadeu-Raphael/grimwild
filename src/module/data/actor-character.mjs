@@ -83,7 +83,9 @@ export default class GrimwildCharacter extends GrimwildActorBase {
 		schema.backgrounds = new fields.ArrayField(
 			new fields.SchemaField({
 				name: new fields.StringField(),
-				wises: new fields.ArrayField(new fields.StringField())
+				wises: new fields.ArrayField(new fields.StringField(), {
+					initial: ["", "", ""]
+				})
 			}),
 			{
 				initial: [
@@ -388,6 +390,42 @@ export default class GrimwildCharacter extends GrimwildActorBase {
 	 * @returns {object} Source document with migrated data values.
 	 */
 	static migrateData(source) {
+		let backgrounds = source.backgrounds;
+		if (typeof backgrounds === "string") {
+			backgrounds = [backgrounds];
+		}
+		else if (!Array.isArray(backgrounds) && backgrounds && typeof backgrounds === "object") {
+			const isSingleBackground = Object.prototype.hasOwnProperty.call(backgrounds, "name")
+				|| Object.prototype.hasOwnProperty.call(backgrounds, "wises");
+			backgrounds = isSingleBackground ? [backgrounds] : Object.values(backgrounds);
+		}
+
+		if (Array.isArray(backgrounds)) {
+			source.backgrounds = backgrounds.map((background) => {
+				if (typeof background === "string") {
+					return { name: background, wises: ["", "", ""] };
+				}
+				if (!background || typeof background !== "object" || Array.isArray(background)) {
+					return { name: "", wises: ["", "", ""] };
+				}
+
+				let wises = [];
+				if (Array.isArray(background.wises)) {
+					wises = background.wises.map((wise) => wise == null ? "" : String(wise));
+				}
+				else if (typeof background.wises === "string") {
+					wises = [background.wises];
+				}
+				while (wises.length < 3) wises.push("");
+
+				return {
+					...background,
+					name: background.name == null ? "" : String(background.name),
+					wises
+				};
+			});
+		}
+
 		if (!source.bloodied?.pool && source.bloodied?.diceNum) {
 			const oldBloodied = { ...source.bloodied };
 			source.bloodied = {

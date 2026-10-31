@@ -3,6 +3,12 @@
 		<!-- Backgrounds -->
 		<fieldset class="backgrounds grid-span-1 grid-row-span-2 grid-start-1">
 			<legend>{{ context.systemFields.backgrounds.label }}</legend>
+			<button class="background-control background-create"
+				title="Add background"
+				data-action="createArrayEntry"
+				data-field="backgrounds"
+				type="button"
+			><i class="fas fa-plus"></i></button>
 			<div :class="`background flexcol ${key === 0 ? 'stroke stroke-bottom' : ''}`" v-for="(background, key) in context.system.backgrounds" :key="key">
 				<div class="background-name form-group stacked">
 					<label>{{ game.i18n.localize('Name') }}</label>
@@ -29,6 +35,12 @@
 						/>
 					</div>
 				</div>
+				<a class="background-control background-delete"
+					title="Delete background"
+					data-action="deleteArrayEntry"
+					data-field="backgrounds"
+					:data-key="key"
+				><i class="fas fa-trash"></i></a>
 			</div>
 		</fieldset>
 		<!-- Conditions -->

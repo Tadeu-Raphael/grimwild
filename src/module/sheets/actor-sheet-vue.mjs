@@ -346,7 +346,7 @@ export class GrimwildActorSheetVue extends VueRenderingMixin(GrimwildBaseVueActo
 	}
 
 	/**
-	 * Handle creating a new bond entry.
+	 * Handle creating a new array entry.
 	 *
 	 * @this GrimwildActorSheet
 	 * @param {PointerEvent} event   The originating click event
@@ -381,6 +381,9 @@ export class GrimwildActorSheetVue extends VueRenderingMixin(GrimwildBaseVueActo
 				break;
 
 			default:
+				if (field === "backgrounds") {
+					defaultValue = { name: "", wises: ["", "", ""] };
+				}
 				break;
 		}
 
@@ -421,7 +424,7 @@ export class GrimwildActorSheetVue extends VueRenderingMixin(GrimwildBaseVueActo
 	}
 
 	/**
-	 * Handle deleting an existing bond entry.
+	 * Handle deleting an existing array entry.
 	 *
 	 * @this GrimwildActorSheet
 	 * @param {PointerEvent} event   The originating click event
