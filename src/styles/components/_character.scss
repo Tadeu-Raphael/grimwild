@@ -8,11 +8,37 @@
 	.trait,
 	.desire {
 		input[type="checkbox"] {
-			flex: 0 0 20px;
-			width: 20px;
+			flex: 20px 0;
 			height: 20px;
-			appearance: auto;
-			accent-color: var(--color-level-success);
+
+			&::before {
+				font-family: "Font Awesome 6 Free";
+				font-weight: 900;
+			}
+
+			&::after {
+				content: '';
+			}
+
+			&:not(:checked) {
+				&::before {
+					color: var(--color-level-error);
+					content: "\f00d";
+				}
+				&::after {
+					content: '';
+				}
+			}
+
+			&:checked {
+				&::before {
+					color: var(--color-level-success);
+					content: '\f00c';
+				}
+				&::after {
+					content: '';
+				}
+			}
 		}
 
 		&.not {
