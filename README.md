@@ -24,6 +24,8 @@ The manifest is configured so that Foundry will be able to handle updates. Once 
 
 Create a release note at `release-notes/<version>.md`, then push a tag using the same version (for example, `0.6.0`). The GitHub Actions workflow builds the system and creates a GitHub Release with `system.json` and `grimwild.zip` attached. Use semantic version tags without a `v` prefix so the tag, manifest version, and release-notes filename match.
 
+Pushes to `main` run the build only; pushing a tag creates the release.
+
 The repository must be public for Foundry to download the manifest and release package.
 
 ## Getting Started
