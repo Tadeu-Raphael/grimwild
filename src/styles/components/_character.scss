@@ -12,8 +12,10 @@
 			height: 20px;
 
 			&::before {
-				font-family: "Font Awesome 6 Pro";
-				font-weight: 900;
+				font-family: sans-serif;
+				font-size: 16px;
+				font-weight: 700;
+				line-height: 1;
 			}
 
 			&::after {
@@ -23,7 +25,7 @@
 			&:not(:checked) {
 				&::before {
 					color: var(--color-level-error);
-					content: "\f00d";
+					content: "\2717";
 				}
 				&::after {
 					content: '';
@@ -33,7 +35,7 @@
 			&:checked {
 				&::before {
 					color: var(--color-level-success);
-					content: '\f00c';
+					content: "\2713";
 				}
 				&::after {
 					content: '';
